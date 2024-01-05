@@ -370,5 +370,48 @@
       "restaurantId": "tasty-treats"
     }
   ],
-  "orders": []
+  "orders": [
+    {
+      "address": "AV 85",
+      "number": "112",
+      "optionalAddress": "",
+      "paymentOptions": "DEB",
+      "orderItens": [
+        {
+          "quantity": 1,
+          "menuId": "capp"
+        },
+        {
+          "quantity": 1,
+          "menuId": "starb"
+        },
+        {
+          "quantity": 1,
+          "menuId": "espreso"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "address": "Av. Edmundo",
+      "number": "115",
+      "optionalAddress": "",
+      "paymentOptions": "DEB",
+      "orderItens": [
+        {
+          "quantity": 2,
+          "menuId": "donut"
+        },
+        {
+          "quantity": 1,
+          "menuId": "bread"
+        },
+        {
+          "quantity": 1,
+          "menuId": "espreso"
+        }
+      ],
+      "id": 2
+    }
+  ]
 }
