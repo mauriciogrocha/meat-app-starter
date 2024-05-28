@@ -4,7 +4,7 @@ import { MEAT_API } from "app/app.api";
 import { Observable } from "rxjs";
 import { User } from "./user.model";
 import { NavigationEnd, Router } from "@angular/router";
-import 'rxjs/operator/filter'
+import { filter } from 'rxjs/operators';
 
 @Injectable()
 export class LoginService {
@@ -12,9 +12,10 @@ export class LoginService {
     user: User
     lastUrl: string
 
-    constructor(private http:HttpClient, private router: Router) {
-        this.router.events.filter(e => e instanceof NavigationEnd)
-                          .subscribe((e: NavigationEnd)=> this.lastUrl = e.url)
+    constructor(private http: HttpClient, private router: Router) {
+        this.router.events.pipe(
+            filter(e => e instanceof NavigationEnd)
+        ).subscribe((e: NavigationEnd) => this.lastUrl = e.url);
     }
 
     isLoggedIn(): boolean {

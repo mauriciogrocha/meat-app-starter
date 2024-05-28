@@ -3,7 +3,8 @@ import { Restaurant } from './restaurant/restaurant.model';
 import { RestaurantsService } from './restaurants.service';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { trigger, state, style, transition, animate } from '@angular/animations';
-import { Observable } from 'rxjs';
+import { Observable, from } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'mt-restaurants',
@@ -43,16 +44,19 @@ export class RestaurantsComponent implements OnInit {
       searchControl: this.searchControl
     })
 
-    this.searchControl.valueChanges
-        .debounceTime(500)
-        .distinctUntilChanged()
-        .switchMap(searchTerm => this.restaurantsService.restaurants(searchTerm)
-          .catch(error => Observable.from([])))
-        .subscribe(restaurants => this.restaurants = restaurants)
 
-    this.restaurantsService.restaurants().subscribe(restaurants => this.restaurants = restaurants)
+
+  this.searchControl.valueChanges.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+    switchMap(searchTerm => this.restaurantsService.restaurants(searchTerm).pipe(
+      catchError(() => from([]))
+    ))
+  ).subscribe(restaurants => this.restaurants = restaurants);
+
+  this.restaurantsService.restaurants().subscribe(restaurants => this.restaurants = restaurants);
   }
-
+  
   toggleSearch() {
     this.searchBarState = this.searchBarState === 'hidden' ? 'visible' : 'hidden'
   }
