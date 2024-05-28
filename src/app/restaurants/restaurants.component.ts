@@ -46,15 +46,18 @@ export class RestaurantsComponent implements OnInit {
 
 
 
-  this.searchControl.valueChanges.pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-    switchMap(searchTerm => this.restaurantsService.restaurants(searchTerm).pipe(
-      catchError(() => from([]))
-    ))
-  ).subscribe(restaurants => this.restaurants = restaurants);
+  this.searchControl.valueChanges
+      .pipe(
+            debounceTime(500),
+            distinctUntilChanged(),
+            switchMap(searchTerm => 
+                                 this.restaurantsService
+                                     .restaurants(searchTerm)
+                                     .pipe(catchError(() => from([]))))
+      ).subscribe(restaurants => this.restaurants = restaurants);
 
-  this.restaurantsService.restaurants().subscribe(restaurants => this.restaurants = restaurants);
+  this.restaurantsService.restaurants()
+                         .subscribe(restaurants => this.restaurants = restaurants);
   }
   
   toggleSearch() {
